@@ -36,8 +36,12 @@ def with_retry(func, retries=3, delay=2):
 # ─── Google Sheets ───
 def get_client():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(
-        os.path.join(os.path.dirname(__file__), "credentials.json"), scope)
+    try:
+        creds_dict = dict(st.secrets["gcp_service_account"])
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    except Exception:
+        creds = ServiceAccountCredentials.from_json_keyfile_name(
+            os.path.join(os.path.dirname(__file__), "credentials.json"), scope)
     return gspread.authorize(creds)
 
 def get_spreadsheet():

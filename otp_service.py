@@ -57,10 +57,17 @@ def send_otp_email(recipient_email, otp, sender_email, sender_password):
     except Exception as e:
         return False, f"Email error: {str(e)}"
 
+def get_email_config():
+    try:
+        import streamlit as st
+        return st.secrets["email"]["sender"], st.secrets["email"]["password"], False
+    except Exception:
+        from email_config import SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE
+        return SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE
 
 def send_otp(recipient_email, otp):
     """Main function — checks config for demo/real mode."""
-    from email_config import SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE
+    SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE = get_email_config()
 
     if DEMO_MODE or SENDER_EMAIL == "your_email@gmail.com":
         return True, "DEMO"
@@ -70,7 +77,7 @@ def send_otp(recipient_email, otp):
 
 def send_results_email(recipient_email, mr_winner, miss_winner, mr_votes, miss_votes):
     """Send election results announcement email."""
-    from email_config import SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE
+    SENDER_EMAIL, SENDER_APP_PASSWORD, DEMO_MODE = get_email_config()
 
     if DEMO_MODE or SENDER_EMAIL == "your_email@gmail.com":
         return True, "DEMO"
