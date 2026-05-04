@@ -130,8 +130,7 @@ if not st.session_state.logged_in:
                             if success:
                                 st.session_state.otp_value = otp
                                 st.session_state.otp_sent = True
-                                parts = email.split("@")
-                                st.session_state._email_display = parts[0][:2]+"***@"+parts[1] if "@" in email else "***"
+                                st.session_state._email_display = email
                                 st.session_state._is_demo = (msg=="DEMO")
                                 st.session_state._user_data = {"name":str(match.iloc[0]["Name"]).upper(),"role":match.iloc[0]["Role"],"roll":roll_clean}
                                 st.rerun()
@@ -145,7 +144,7 @@ if not st.session_state.logged_in:
             if st.session_state.get("_is_demo", True):
                 st.info(f"🔑 Demo OTP: **{st.session_state.otp_value}**")
             else:
-                st.info("📧 Check your email inbox")
+                st.info("📧 Check your email inbox. **(Please check your SPAM folder as well!)**")
 
             otp_input = st.text_input("🔢 Enter 6-digit OTP", placeholder="Enter OTP", key="otp_input", max_chars=6, label_visibility="collapsed")
             c1, c2 = st.columns(2)
