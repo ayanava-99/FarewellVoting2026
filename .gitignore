@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Secrets & Credentials
+credentials.json
+projectfarewell-*.json
+email_config.py
+sms_config.py
